@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
-class Tt extends StatefulWidget {
-  const Tt({super.key});
+import '../../../dynamic_snap_grid_example.dart';
+
+
+
+class Example1Screen extends StatefulWidget {
+  const Example1Screen({super.key});
 
   @override
-  _TtState createState() => _TtState();
+  State<Example1Screen> createState() => _Example1ScreenState();
 }
 
-class _TtState extends State<Tt> {
-  double unitSize = 60; // اندازه هر خانه گرید (پیکسل)
+class _Example1ScreenState extends State<Example1Screen> {
+  double unitSize = 90; // اندازه هر خانه گرید (پیکسل)
   double widgetUnits = 2; // اندازه ویجت بر حسب خانه
 
   List<Offset> widgetPositions = [
     Offset(0, 0),
-    Offset(120, 0),
-    Offset(0, 120),
+    Offset(180, 0),
+    Offset(0, 180),
   ];
 
   // موقعیت قبلی هنگام درگ
@@ -41,7 +45,7 @@ class _TtState extends State<Tt> {
     return Offset(snappedX, snappedY);
   }
 
-  List<Color> _colors = [Colors.blue, Colors.red, Colors.orange];
+  final List<Color> _colors = [Colors.blue, Colors.red, Colors.orange];
 
   @override
   Widget build(BuildContext context) {
@@ -124,28 +128,4 @@ class _TtState extends State<Tt> {
       ),
     );
   }
-}
-
-class GridPainter extends CustomPainter {
-  final double unitSize;
-
-  GridPainter({required this.unitSize});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      // ..color = Colors.grey.withOpacity(0.4)
-      ..color = Colors.grey.withValues(alpha: 0.4)
-      ..strokeWidth = 1;
-
-    for (double i = 0; i < size.width; i += unitSize) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-    for (double j = 0; j < size.height; j += unitSize) {
-      canvas.drawLine(Offset(0, j), Offset(size.width, j), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

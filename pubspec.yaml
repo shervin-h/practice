@@ -41,8 +41,10 @@ dependencies:
 #  speech_to_text: ^6.1.1
   permission_handler: ^10.2.0
   shamsi_date: ^1.0.1
-  syncfusion_flutter_gauges: ^20.4.44
-  syncfusion_flutter_datagrid: ^20.4.44
+  syncfusion_flutter_core: ^29.1.38
+  syncfusion_flutter_gauges: ^29.1.38 # ^20.4.44
+  syncfusion_flutter_datagrid: ^29.1.38 # ^20.4.44
+  syncfusion_flutter_charts: ^29.1.38
   font_awesome_flutter: ^10.3.0
   flutter_circular_text: ^0.3.1
   shimmer: ^2.0.0

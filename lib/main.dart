@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/bindings/custom_dashboard_generator_bindings.dart';
+import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/example2_screen.dart';
 import 'package:practice/practice_for_dashboard_generator/dashboard_generator.dart';
-import 'package:practice/practice_for_dashboard_generator/tt.dart';
+import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/custom_dashboard_generator_screen.dart';
 import 'package:practice/work_with_bloc/counter_cubit.dart';
 
 void main() {
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'Yekan',
@@ -39,7 +42,21 @@ class MyApp extends StatelessWidget {
       // home: const MultiSnapGridExample(),
       // home: const DynamicSnapGridExample(),
       // home: const DashboardGenerator(),
-      home: const Tt(),
+      // home: const CustomDashboardGenerator(),
+      initialRoute: '/custom_dashboard_generator',
+      // initialRoute: '/example2screen',
+      getPages: [
+        GetPage(
+          name: '/custom_dashboard_generator',
+          page: () => const CustomDashboardGeneratorScreen(),
+          binding: CustomDashboardGeneratorBindings(),
+        ),
+
+        GetPage(
+          name: '/example2screen',
+          page: () => const DashboardBuilderPage(),
+        ),
+      ],
     );
   }
 }
