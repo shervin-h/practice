@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/models/dashboard_widget_model.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/models/sidebar_palette_model.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/controllers/custom_dashboard_generator_controller.dart';
+import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/widgets/draggable_resizable_widget.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/widgets/open_sidebar_button.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/widgets/sidebar/sidebar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -11,6 +13,7 @@ import '../../../dynamic_snap_grid_example.dart';
 
 class SalesData {
   SalesData(this.year, this.sales);
+
   final String year;
   final double sales;
 }
@@ -60,12 +63,6 @@ class _CustomDashboardGeneratorScreenState extends State<CustomDashboardGenerato
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    double maxX = screenSize.width - widgetUnits * unitSize;
-    double maxY = screenSize.height - widgetUnits * unitSize;
-
-    final controller = Get.find<CustomDashboardGeneratorController>();
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Stack(
@@ -139,74 +136,84 @@ class _CustomDashboardGeneratorScreenState extends State<CustomDashboardGenerato
             ),*/
 
           GetBuilder<CustomDashboardGeneratorController>(
-            id: 'custom-dashboard',
+              id: 'custom-dashboard',
               builder: (controller) {
-            return Positioned.fill(
-              child: DragTarget<SidebarPaletteModel>(
-                onWillAcceptWithDetails: (dragTargetDetails) => true,
-                onAcceptWithDetails: (dragTargetDetails) {
-                  final sidebarPaletteModel = dragTargetDetails.data;
-                  if (sidebarPaletteModel.type.isCartesianChart) {
-                    controller.addWidget(
-                        SfCartesianChart(
-                          // Initialize category axis
-                            primaryXAxis: CategoryAxis(),
+                return Positioned.fill(
+                  child: DragTarget<SidebarPaletteModel>(
+                    onWillAcceptWithDetails: (dragTargetDetails) => true,
+                    onAcceptWithDetails: (dragTargetDetails) {
+                      final sidebarPaletteModel = dragTargetDetails.data;
+                      controller.addDashboardWidget(DashboardWidgetModel.fromSidebarPaletteModel(sidebarPaletteModel));
 
-                            series: <LineSeries<SalesData, String>>[
-                              LineSeries<SalesData, String>(
-                                // Bind data source
-                                  dataSource:  <SalesData>[
-                                    SalesData('Jan', 35),
-                                    SalesData('Feb', 28),
-                                    SalesData('Mar', 34),
-                                    SalesData('Apr', 32),
-                                    SalesData('May', 40)
+                      /*if (sidebarPaletteModel.type.isCartesianChart) {}
+                      if (sidebarPaletteModel.type.isCircularChart) {
+                        controller.addWidget(Container(
+                          width: 300,
+                          height: 300,
+                          child: const SfCircularChart(),
+                        ));
+                      }
+                      if (sidebarPaletteModel.type.isPyramidChart) {
+                        controller.addWidget(const SizedBox(
+                          width: 400,
+                          height: 400,
+                          child: const SfPyramidChart(),
+                        ));
+                      }
+                      if (sidebarPaletteModel.type.isFunnelChart) {
+                        controller.addWidget(const SfFunnelChart());
+                      }
+                      if (sidebarPaletteModel.type.isSparkLineChart) {
+                        controller.addWidget(SizedBox(
+                          width: 300,
+                          height: 300,
+                          child: SfSparkLineChart(
+                            data: const <double>[1, 5, -6, 0, 1, -2, 7, -7, -4, -10, 13, -6, 7, 5, 11, 5, 3],
+                          ),
+                        ));
+                      }
+                      if (sidebarPaletteModel.type.isSparkAreaChart) {
+                        controller.addWidget(SfSparkLineChart());
+                      }
+                      if (sidebarPaletteModel.type.isSparkBarChart) {
+                        controller.addWidget(SfSparkBarChart());
+                      }
+                      if (sidebarPaletteModel.type.isSparkWinLossChart) {
+                        controller.addWidget(SfSparkWinLossChart());
+                      }*/
+                    },
+                    builder: (context, paletteModels, rejectedData) {
+                      return Stack(
+                        children: controller.dashboardWidgetModels
+                            .map(
+                              (element) => DraggableResizableWidget(
+                                dashboardWidgetModel: element,
+                                child: SfCartesianChart(
+                                  // Initialize category axis
+                                  primaryXAxis: const CategoryAxis(),
+                                  series: <LineSeries<SalesData, String>>[
+                                    LineSeries<SalesData, String>(
+                                      // Bind data source
+                                      dataSource: <SalesData>[
+                                        SalesData('Jan', 35),
+                                        SalesData('Feb', 28),
+                                        SalesData('Mar', 34),
+                                        SalesData('Apr', 32),
+                                        SalesData('May', 40)
+                                      ],
+                                      xValueMapper: (SalesData sales, _) => sales.year,
+                                      yValueMapper: (SalesData sales, _) => sales.sales,
+                                    ),
                                   ],
-                                  xValueMapper: (SalesData sales, _) => sales.year,
-                                  yValueMapper: (SalesData sales, _) => sales.sales
-                              )
-                            ]
-                        )
-                    );
-                  }
-                  if (sidebarPaletteModel.type.isCircularChart) {
-                    controller.addWidget(Container(width: 300, height: 300, child: const SfCircularChart(),));
-                  }
-                  if (sidebarPaletteModel.type.isPyramidChart) {
-                    controller.addWidget(const SizedBox(width: 400, height: 400, child: const SfPyramidChart(),));
-                  }
-                  if (sidebarPaletteModel.type.isFunnelChart) {
-                    controller.addWidget(const SfFunnelChart());
-                  }
-                  if (sidebarPaletteModel.type.isSparkLineChart) {
-                    controller.addWidget(SizedBox(
-                      width: 300,
-                      height: 300,
-                      child: SfSparkLineChart(
-                        data: const <double>[
-                          1, 5, -6, 0, 1, -2, 7, -7, -4, -10, 13, -6, 7, 5, 11, 5, 3
-                        ],
-                      ),
-                    ));
-                  }
-                  if (sidebarPaletteModel.type.isSparkAreaChart) {
-                    controller.addWidget(SfSparkLineChart());
-                  }
-                  if (sidebarPaletteModel.type.isSparkBarChart) {
-                    controller.addWidget(SfSparkBarChart());
-                  }
-                  if (sidebarPaletteModel.type.isSparkWinLossChart) {
-                    controller.addWidget(SfSparkWinLossChart());
-                  }
-                },
-                builder: (context, paletteModels, rejectedData) {
-                  return Wrap(
-                    children: controller.dashboardWidgets,
-                  );
-                },
-              ),
-            );
-          }),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
+                );
+              }),
 
           const OpenSidebarButton(),
 

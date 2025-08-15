@@ -20,14 +20,18 @@ class SidebarPaletteModel {
 }
 
 enum ChartType {
-  cartesianChart,
-  circularChart,
-  pyramidChart,
-  funnelChart,
-  sparkLineChart,
-  sparkAreaChart,
-  sparkBarChart,
-  sparkWinLossChart;
+  cartesianChart('cartesian'),
+  circularChart('circular'),
+  pyramidChart('pyramid'),
+  funnelChart('funnel'),
+  sparkLineChart('sparkLine'),
+  sparkAreaChart('sparkArea'),
+  sparkBarChart('sparkBar'),
+  sparkWinLossChart('sparkWinLoss');
+
+
+  const ChartType(this.title);
+  final String title;
 
   bool get isCartesianChart => this == ChartType.cartesianChart;
 
