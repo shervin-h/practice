@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice/dashboard_practice/dashboard_screen.dart';
+import 'package:practice/dashboard_practice/main_screen.dart';
+import 'package:practice/dashboard_practice/my_example/my_dashboard_page.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/bindings/custom_dashboard_generator_bindings.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/example2_screen.dart';
 import 'package:practice/practice_for_dashboard_generator/dashboard_generator.dart';
@@ -8,6 +11,7 @@ import 'package:practice/practice_for_dashboard_generator/custom_dashboard_gener
 import 'package:practice/work_with_bloc/counter_cubit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     BlocProvider(
       create: (context) => CounterCubit(0),
@@ -43,18 +47,28 @@ class MyApp extends StatelessWidget {
       // home: const DynamicSnapGridExample(),
       // home: const DashboardGenerator(),
       // home: const CustomDashboardGenerator(),
-      initialRoute: '/custom_dashboard_generator',
-      // initialRoute: '/example2screen',
+      initialRoute: '/my_dashboard',
       getPages: [
         GetPage(
           name: '/custom_dashboard_generator',
           page: () => const CustomDashboardGeneratorScreen(),
           binding: CustomDashboardGeneratorBindings(),
         ),
-
         GetPage(
           name: '/example2screen',
           page: () => const DashboardBuilderPage(),
+        ),
+        GetPage(
+          name: '/main_dashboard',
+          page: () => const MainScreen(),
+        ),
+        GetPage(
+          name: '/dashboard_screen',
+          page: () => const DashboardScreen(),
+        ),
+        GetPage(
+          name: '/my_dashboard',
+          page: () => const MyDashboardPage(),
         ),
       ],
     );
