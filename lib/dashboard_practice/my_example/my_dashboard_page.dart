@@ -1,5 +1,6 @@
-import 'package:dashboard/dashboard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shervin_dash/shervin_dash.dart';
 
 class MyDashboardPage extends StatefulWidget {
   const MyDashboardPage({super.key});
@@ -56,20 +57,22 @@ class _MyDashboardPageState extends State<MyDashboardPage> {
         /// ایونت‌های لمس/ماوس به بچه‌ها هم بره.
         absorbPointer: false,
 
-        /// پس‌زمینه‌ی هر اسلات (سلول گرید) رو می‌سازه. توی مثال با یه Border خاکستری نازک دور هر سلول می‌کشه؛ یعنی خطوط گرید از اینجا میان، نه از paintBackgroundLines. اگه اینو برداری و بخوای خط‌های گرید رو ببینی، باید paintBackgroundLines: true رو توی editModeSettings فعال کنی.
+        /// پس‌زمینه‌ی هر اسلات (سلول گرید) رو می‌سازه.
+        /// توی مثال با یه Border خاکستری نازک دور هر سلول می‌کشه؛ یعنی خطوط گرید از اینجا میان، نه از paintBackgroundLines.
+        /// اگه اینو برداری و بخوای خط‌های گرید رو ببینی، باید paintBackgroundLines: true رو توی editModeSettings فعال کنی.
         slotBackgroundBuilder: SlotBackgroundBuilder.withFunction((context, item, x, y, editing) {
           return Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black12, width: 0.5),
-              borderRadius: BorderRadius.circular(10),
+              // borderRadius: BorderRadius.circular(10),
             ),
           );
         }),
 
         /// فاصله‌ی دور و بینِ سلول‌ها.
-        padding: const EdgeInsets.all(8),
-        horizontalSpace: 8,
-        verticalSpace: 8,
+        padding: const EdgeInsets.all(0),
+        horizontalSpace: 0,
+        verticalSpace: 0,
 
         /// نسبت عرض به ارتفاع هر سلول؛ ۱ یعنی مربع.
         slotAspectRatio: 1,
@@ -96,12 +99,8 @@ class _MyDashboardPageState extends State<MyDashboardPage> {
         physics: const RangeMaintainingScrollPhysics(),
 
         /// تعداد ستون‌های گرید. توی دمو با توجه به عرض صفحه ۴/۶/۸ ستون انتخاب می‌شه. اگر slot null بمونه، خطا می‌گیری.
-        // slotCount: screenWidth > 900
-        //     ? 8
-        //     : screenWidth > 600
-        //         ? 6
-        //         : 4,
         slotCount: slotCount,
+
         /// تنظیمات حالت ویرایش
         editModeSettings: EditModeSettings(
           /// اجازه‌ی کشیدن آیتم بیرون محدوده رو نده.
@@ -136,16 +135,204 @@ class _MyDashboardPageState extends State<MyDashboardPage> {
           ),
         ),
         itemBuilder: (item) {
-          return Card(
-            color: Colors.blueAccent,
-            child: Center(
-              child: Text(
-                "Item ${item.identifier}",
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ),
-          );
+          return ChartContainer(item: item);
         },
+      ),
+    );
+  }
+}
+
+class ChartContainer extends StatefulWidget {
+  const ChartContainer({
+    required this.item,
+    this.radius = 4,
+    this.triggerLength = 20,
+    this.triggerColor,
+    this.triggerWidth = 2,
+    super.key,
+  });
+
+  final DashboardItem item;
+  final double radius;
+  final Color? triggerColor;
+  final double triggerLength;
+  final double triggerWidth;
+
+  @override
+  State<ChartContainer> createState() => _ChartContainerState();
+}
+
+class _ChartContainerState extends State<ChartContainer> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (pointerEnterEvent) {
+        _isHovered = true;
+        setState(() {});
+      },
+      onExit: (pointerExitEvent) {
+        _isHovered = false;
+        setState(() {});
+      },
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.radius), color: Colors.white),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(widget.radius),
+          child: Stack(
+            children: [
+              if (_isHovered) ...[
+                PositionedDirectional(
+                  start: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    width: 10,
+                    height: double.infinity,
+                    child: Center(
+                      child: Container(
+                        width: widget.triggerWidth,
+                        height: widget.triggerLength,
+                        color: widget.triggerColor ?? const Color(0xFFA3A3A3),
+                      ),
+                    ),
+                  ),
+                ),
+                PositionedDirectional(
+                  end: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    width: 10,
+                    height: double.infinity,
+                    child: Center(
+                      child: Container(
+                        width: widget.triggerWidth,
+                        height: widget.triggerLength,
+                        color: widget.triggerColor ?? const Color(0xFFA3A3A3),
+                      ),
+                    ),
+                  ),
+                ),
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  top: 0,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 10,
+                    child: Center(
+                      child: Container(
+                        width: widget.triggerLength,
+                        height: widget.triggerWidth,
+                        color: widget.triggerColor ?? const Color(0xFFA3A3A3),
+                      ),
+                    ),
+                  ),
+                ),
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 10,
+                    child: Center(
+                      child: Container(
+                        width: widget.triggerLength,
+                        height: widget.triggerWidth,
+                        color: widget.triggerColor ?? const Color(0xFFA3A3A3),
+                      ),
+                    ),
+                  ),
+                ),
+                PositionedDirectional(
+                  end: 0,
+                  top: 0,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      CupertinoIcons.clear_circled_solid,
+                      color: widget.triggerColor ?? const Color(0xFFA3A3A3),
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VerticalTriggerBar extends StatelessWidget {
+  const VerticalTriggerBar({
+    this.triggerLength = 20,
+    this.triggerWidth = 2,
+    this.triggerColor,
+    this.areaWidth = 10,
+    super.key,
+  });
+
+  final double triggerLength;
+  final double triggerWidth;
+  final Color? triggerColor;
+  final double areaWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return PositionedDirectional(
+      start: 0,
+      top: 0,
+      bottom: 0,
+      child: SizedBox(
+        width: areaWidth,
+        height: double.infinity,
+        child: Center(
+          child: Container(
+            width: triggerWidth,
+            height: triggerLength,
+            color: triggerColor ?? const Color(0xFFA3A3A3),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HorizontalTriggerBar extends StatelessWidget {
+  const HorizontalTriggerBar({
+    this.triggerLength = 20,
+    this.triggerWidth = 2,
+    this.triggerColor,
+    this.areaWidth = 10,
+    super.key,
+  });
+
+  final double triggerLength;
+  final double triggerWidth;
+  final Color? triggerColor;
+  final double areaWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return PositionedDirectional(
+      start: 0,
+      end: 0,
+      top: 0,
+      child: SizedBox(
+        width: double.infinity,
+        height: areaWidth,
+        child: Center(
+          child: Container(
+            width: triggerLength,
+            height: triggerWidth,
+            color: triggerColor ?? const Color(0xFFA3A3A3),
+          ),
+        ),
       ),
     );
   }

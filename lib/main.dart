@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice/dashboard_practice/dashboard_screen.dart';
 import 'package:practice/dashboard_practice/main_screen.dart';
 import 'package:practice/dashboard_practice/my_example/my_dashboard_page.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/bindings/custom_dashboard_generator_bindings.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/example2_screen.dart';
-import 'package:practice/practice_for_dashboard_generator/dashboard_generator.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/custom_dashboard_generator_screen.dart';
 import 'package:practice/work_with_bloc/counter_cubit.dart';
 
@@ -62,10 +60,7 @@ class MyApp extends StatelessWidget {
           name: '/main_dashboard',
           page: () => const MainScreen(),
         ),
-        GetPage(
-          name: '/dashboard_screen',
-          page: () => const DashboardScreen(),
-        ),
+
         GetPage(
           name: '/my_dashboard',
           page: () => const MyDashboardPage(),

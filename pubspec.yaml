@@ -55,7 +55,11 @@ dependencies:
   lottie: ^2.2.0
   flutter_typeahead: ^4.1.1
   google_maps_flutter: ^2.2.3
-  dashboard: ^0.0.4
+#  dashboard: ^0.0.4
+#  dashboard:
+#    path: ../dashboard
+  shervin_dash:
+    path: ../shervin_dash
 #  flutter_map: ^5.0.0
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
