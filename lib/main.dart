@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practice/dashboard_practice/main_screen.dart';
 import 'package:practice/dashboard_practice/my_example/my_dashboard_page.dart';
+import 'package:practice/deepseek_dashboard/deepseek_dashboard_screen.dart';
+import 'package:practice/play_for_make_dashboard/play_for_make_dashboard_screen.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/bindings/custom_dashboard_generator_bindings.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/example2_screen.dart';
 import 'package:practice/practice_for_dashboard_generator/custom_dashboard_generator/presentation/screens/custom_dashboard_generator_screen.dart';
+import 'package:practice/shervin_dashboard/shervin_dashboard_screen.dart';
 import 'package:practice/work_with_bloc/counter_cubit.dart';
 
 void main() {
@@ -45,7 +48,7 @@ class MyApp extends StatelessWidget {
       // home: const DynamicSnapGridExample(),
       // home: const DashboardGenerator(),
       // home: const CustomDashboardGenerator(),
-      initialRoute: '/my_dashboard',
+      initialRoute: '/deepseek_dashboard',
       getPages: [
         GetPage(
           name: '/custom_dashboard_generator',
@@ -64,6 +67,18 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/my_dashboard',
           page: () => const MyDashboardPage(),
+        ),
+        GetPage(
+          name: '/play_for_make_dashboard',
+          page: () => const PlayForMakeDashboardScreen(),
+        ),
+        GetPage(
+          name: '/shervin_dashboard',
+          page: () => const ShervinDashboardScreen(),
+        ),
+        GetPage(
+          name: '/deepseek_dashboard',
+          page: () => DeepseekDashboardScreen(),
         ),
       ],
     );
